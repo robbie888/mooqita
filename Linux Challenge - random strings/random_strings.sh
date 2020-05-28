@@ -48,7 +48,7 @@ done
 echo Your $OUTPUT file is $FSIZE bytes
 
 #now sort the file and put into new file, using default option which keeps the leading numeric strings first
-echo Sorting the file into $OUTPUT
+echo Sorting the file $OUTPUT
 sort $OUTPUT -o $OUTPUT
 
 #now remove the lines leading with an 'a'
