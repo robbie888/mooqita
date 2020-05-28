@@ -1,6 +1,6 @@
 Below is an overview of the challenge from mooqita.org.
 
-See the following files for the script and description:
+See the following files for my solution script and description:
 - random_strings.sh
 - solution_overview.txt
 

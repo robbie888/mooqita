@@ -1,10 +1,9 @@
 #!/bin/bash
 ##Written by Robert Bereny - 2020.
-##For Mooqita online linux challenge. 
+##For Mooqita online linux challenge.
 
 #output files
 OUTPUT="output.txt"
-SORTED_OUTPUT="sorted_output.txt"
 FILTERED_OUTPUT="filtered_output.txt"
 TEMP_FILE="temp.txt" #this file is removed at the end of the script
 
@@ -22,11 +21,11 @@ let LEN=15
 echo -n "" > $TEMP_FILE #temp working file
 echo -n "" > $OUTPUT #output file
 
-let FSIZE=$(cat $OUTPUT | wc -c) #set FSIZE variable for usage below. 
+let FSIZE=$(cat $OUTPUT | wc -c) #set FSIZE variable for usage below.
 
-#while the output file size is less than the limit, continue adding random strings. 
+#while the output file size is less than the limit, continue adding random strings.
 while [[ $FSIZE -lt $LIMIT ]]
-do 
+do
     #the following line gets the random data and organises it into alphanumeric chars. Elaborated:
         #head gets the data from /dev/urandom, tr removes all the non alphanumeric chars from the stream, note a lot are removed
         #fold enforces the line length max, and echo puts a new line at the end of the last line of the stream.
@@ -43,25 +42,22 @@ do
         let DIFF=$LIMIT-$FSIZE-1 #Add only the amount needed to fill the file, the -1 is for the newline char at the end
         (head -c $DIFF $TEMP_FILE ; echo) >> $OUTPUT
     fi
-    let FSIZE=$(cat $OUTPUT | wc -c) #update the output file size variable for the next iteration. 
+    let FSIZE=$(cat $OUTPUT | wc -c) #update the output file size variable for the next iteration.
 done
 
 echo Your $OUTPUT file is $FSIZE bytes
 
 #now sort the file and put into new file, using default option which keeps the leading numeric strings first
-echo Sorting the file into $SORTED_OUTPUT
-sort $OUTPUT > $SORTED_OUTPUT
+echo Sorting the file into $OUTPUT
+sort $OUTPUT -o $OUTPUT
 
 #now remove the lines leading with an 'a'
 echo Removing lines leading with an \'a\' or \'A\' and putting results into $FILTERED_OUTPUT
-grep -v -E "^a|^A" $SORTED_OUTPUT > $FILTERED_OUTPUT
+grep -v -E "^a|^A" $OUTPUT > $FILTERED_OUTPUT
 
-let REMOVED=$(cat $SORTED_OUTPUT | wc -l)-$(cat $FILTERED_OUTPUT | wc -l)
-echo Number of lines removed $REMOVED 
+let REMOVED=$(cat $OUTPUT | wc -l)-$(cat $FILTERED_OUTPUT | wc -l)
+echo Number of lines removed $REMOVED
 
 #clean up remove $TEMP_FILE file.
 echo Removing temporary file
 rm -f $TEMP_FILE
-
-
-

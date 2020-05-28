@@ -4,7 +4,7 @@ I have attempted to explain everything in as much detail as possible, more comme
 I may have over-commented, but hopefully this will aid the challenge reviewers.
 
 Script Assumptions:
-- The script can create files in the local directory, modify them and remove them.
+- The script can create and modify files in the local directory.
 - The script will have read access to /dev/urandom
 - The following programs are available, in the $PATH: grep, tr, fold, wc,  cat, head, echo
 - 1MB is 1024KBs or 1,048,576 Bytes
@@ -15,7 +15,8 @@ The default files created are: output.txt, sorted_output.txt and filtered_output
 
 Summary:
 Part 1:
-I have attempted to make the script versatile by using variables for most of the instructions which are at the top of the script. For example the output file names and the length of the chars per line is easily configurable by changing the relevant variable value at the top of the script.
+I have attempted to make the script versatile by using variables for most of the instructions which are at the top of the script.
+For example the output file names and the length of the chars per line is easily configurable by changing the relevant variable value at the top of the script.
 
 The work is done in a while loop that checks the output file size each iteration and stops once the file limit is reached.
 In the loop, a block of data is read from /dev/urandom then parsed into alphanumeric chars and modified to be the required length using the tools mentioned above. Details are in the script’s comments.
