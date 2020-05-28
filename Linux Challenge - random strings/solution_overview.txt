@@ -1,0 +1,33 @@
+Welcome!
+For my solution I've used the built-in linux tools available such as /dev/urandom, grep, tr, head and fold to accomplish the requirements.
+I have attempted to explain everything in as much detail as possible, more comments are in the script itself too.
+I may have over-commented, but hopefully this will aid the challenge reviewers.
+
+Script Assumptions:
+- The script can create files in the local directory, modify them and remove them.
+- The script will have read access to /dev/urandom
+- The following programs are available, in the $PATH: grep, tr, fold, wc,  cat, head, echo
+- 1MB is 1024KBs or 1,048,576 Bytes
+
+Output:
+After running the script there will be 3 files generated in the locate directory.
+The default files created are: output.txt, sorted_output.txt and filtered_output.txt.
+
+Summary:
+Part 1:
+I have attempted to make the script versatile by using variables for most of the instructions which are at the top of the script. For example the output file names and the length of the chars per line is easily configurable by changing the relevant variable value at the top of the script.
+
+The work is done in a while loop that checks the output file size each iteration and stops once the file limit is reached.
+In the loop, a block of data is read from /dev/urandom then parsed into alphanumeric chars and modified to be the required length using the tools mentioned above. Details are in the script’s comments.
+
+Part 2:
+To ensure the output file does not exceed the required limit, data is read into a temp file, which is then added to the output file. This prevents too much data being put into the output file. Prior to adding data from the temp file to the output file, the output file size is checked , if adding the data will exceed the size limit then only a portion of the data in the temp file is added. Note the temp file will always be significantly smaller than the size of the data block being read from /dev/urandom, since in the script tr strips all the non alphanumeric characters. I decided to read in blocks of data from /dev/urandom rather single lines, as processing one line at a time is very slow.
+
+Part 3:
+Once the output file is completed, I use the sort program to sort the file alphabetically, the default options keep the numeric leading lines first, which is my preference. The sorted output is put into a separate file.
+
+Part 4:
+Then I use grep with a simple regular expression to remove all lines with a leading 'a' or 'A'. This output is also put into a separate file.
+
+Part 5:
+The amount of lines removed is calculated with wc and printed to the terminal.
