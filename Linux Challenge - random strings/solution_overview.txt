@@ -1,11 +1,3 @@
-FINAL UPDATE: 29 May
-After the last update, I managed to get all the smarts of the script into one line by using tee and piping the output directly into grep.
-
-UPDATE: 29 May
-I have updated the script slightly, in doing so I've manage to remove the need for the temp file and loop as described below.
-As such I've renamed the original script with a _old_v1 postfix, replaced it with the new version.
-Essentially I took advantage of the head -c flag to limit the size of the data stream being put into the file, and as such the script no longer needs to loop around to check the file size as head -c restricts the size.
-
 Welcome!
 For my solution I've used the built-in linux tools available such as /dev/urandom, grep, tr, head and fold to accomplish the requirements.
 I have attempted to explain everything in as much detail as possible, more comments are in the script itself too.
