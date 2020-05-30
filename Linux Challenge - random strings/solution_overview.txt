@@ -9,34 +9,33 @@ Essentially I took advantage of the head -c flag to limit the size of the data s
 Welcome!
 For my solution I've used the built-in linux tools available such as /dev/urandom, grep, tr, head and fold to accomplish the requirements.
 I have attempted to explain everything in as much detail as possible, more comments are in the script itself too.
-I may have over-commented, but hopefully this will aid the challenge reviewers.
 
 Script Assumptions:
-- The script can create and modify files in the local directory.
+- The script can create and modify files in the locate directory.
 - The script will have read access to /dev/urandom
-- The following programs are available, in the $PATH: grep, tr, fold, wc,  cat, head, echo
+- The following programs are available, in the $PATH: grep, tr, fold, wc, head, cat, echo, tee
 - 1MB is 1024KBs or 1,048,576 Bytes
+- Lines can be short than 15 characters: "no more than 15 characters for each line"
 
-Output:
-After running the script there will be 3 files generated in the locate directory.
-The default files created are: output.txt, sorted_output.txt and filtered_output.txt.
+Output: After running the script there will be 2 files generated in the locate directory. The default files created are: output.txt and filtered_output.txt.
 
 Summary:
 Part 1:
 I have attempted to make the script versatile by using variables for most of the instructions which are at the top of the script.
 For example the output file names and the length of the chars per line is easily configurable by changing the relevant variable value at the top of the script.
 
-The work is done in a while loop that checks the output file size each iteration and stops once the file limit is reached.
-In the loop, a block of data is read from /dev/urandom then parsed into alphanumeric chars and modified to be the required length using the tools mentioned above. Details are in the script’s comments.
+The work is all done with built-in Linux tools. First a data stream is read from /dev/urandom then piped into 'tr' which removes all characters from the stream that are outside the required scope. The stream is then piped into 'fold' which converts the stream into separate lines of the required length. After that 'head -c' is used to essentially cut the required amount of bytes out from the data stream, this is then piped into sort and tee, which finally goes into both an output file and 'grep' using 'tee'. Grep then filters out lines with a leading 'a' or 'A' and outputs it into a second file.
 
 Part 2:
-To ensure the output file does not exceed the required limit, data is read into a temp file, which is then added to the output file. This prevents too much data being put into the output file. Prior to adding data from the temp file to the output file, the output file size is checked , if adding the data will exceed the size limit then only a portion of the data in the temp file is added. Note the temp file will always be significantly smaller than the size of the data block being read from /dev/urandom, since in the script tr strips all the non alphanumeric characters. I decided to read in blocks of data from /dev/urandom rather single lines, as processing one line at a time is very slow.
+To ensure the output file does not exceed the required limit, data is piped into 'head -c'. head -c will cut out a specified amount of bytes from the input, so in this case we have chose to cut out 1MB of data from the input stream which prevents the output file ever going above the required limit.
+
+My original attempt at this was using a loop to write either a single line or numerous lines to the file and then check it's size. But that was quite inefficient. I suppose this is traditional programming way, but within the bash terminal, all the tools are there which do this automatically, so the loop is redundant in this case.
 
 Part 3:
-Once the output file is completed, I use the sort program to sort the file alphabetically, the default options keep the numeric leading lines first, which is my preference. The sorted output is put into a separate file.
+I use the sort program to sort the file alphabetically, the default options keep the numeric leading lines first, which is my preference. The first output file comes out of the script sorted already.
 
 Part 4:
-Then I use grep with a simple regular expression to remove all lines with a leading 'a' or 'A'. This output is also put into a separate file.
+I use grep with a simple regular expression to remove all lines with a leading 'a' or 'A'. This output is put into a separate file. By default it is 'filtered_output.txt'.
 
 Part 5:
 The amount of lines removed is calculated with wc and printed to the terminal.

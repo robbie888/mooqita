@@ -3,8 +3,8 @@ Below is an overview of the challenge from mooqita.org.
 See the following files for my solution script and description:
 - random_strings.sh - for the most recent version of the script.
 - solution_overview.txt - a summary of the solution and any updates made mentioned at the top.
-- random_strings_old_v#.sh - for the old version(s) where # is the version number.
-- output.txt and filtered_output.txt - are sample outputs from the most recent script. 
+- old_versions/ - contains the old script version(s) where # is the version number.
+- sample_output/ - contains sample outputs from the most recent script.
 
 Linux challenge - beginner
 
